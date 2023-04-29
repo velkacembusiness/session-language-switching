@@ -21,11 +21,11 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                @foreach(config('app.available_locales') as $locale)
-                    <x-nav-link
-                        :href="route('change-locale', $locale)"
-                        :active="app()->getLocale() == $locale">
-                        {{ strtoupper($locale) }}
+                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                    <x-nav-link rel="alternate" hreflang="{{ $localeCode }}"
+                                :active="$localeCode === app()->getLocale()"
+                                href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                        {{ ucfirst($properties['native']) }}
                     </x-nav-link>
                 @endforeach
                 <x-dropdown align="right" width="48">

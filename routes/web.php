@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Our language change endpoint
-Route::get('lang/{locale}', \App\Http\Controllers\ChangeLanguageController::class)->name('change-locale');
+//Route::get('lang/{locale}', \App\Http\Controllers\ChangeLanguageController::class)->name('change-locale');
 
-Route::middleware('setlocale') // <-- Our middleware to set the language
-->group(function () {
+Route::group([
+    'prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect']
+], function () {
     Route::get('/', function () {
         return view('welcome');
     });
